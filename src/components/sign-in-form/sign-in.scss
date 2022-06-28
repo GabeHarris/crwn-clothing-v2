@@ -1,0 +1,24 @@
+.sign-in-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 0 3rem;
+  width: 26rem;
+
+  h2 {
+    margin: 10px 0;
+  }
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-error {
+  background: rgba(240, 0, 0, .01);
+  border: 2px solid rgba(240, 0, 0, .8);
+  color: rgba(240, 0, 0, .8);
+  margin: 2rem 0 0;
+  padding: 1rem 2rem;
+}

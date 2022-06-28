@@ -1,7 +1,9 @@
 .sign-up-container {
   display: flex;
   flex-direction: column;
-  width: 380px;
+  flex-wrap: wrap;
+  margin: 0 3rem;
+  width: 26rem;
 
   h2 {
     margin: 10px 0;

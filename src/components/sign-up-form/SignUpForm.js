@@ -26,16 +26,19 @@ const SignUpForm = () => {
   };
 
   const handleChange = (event) => {
-    console.log("change");
     const { name: fieldName, value: fieldValue } = event.target;
     setFormFields({ ...formFields, [fieldName]: fieldValue });
   };
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
+    setSignUpError(null);
     const { displayName, email, password, confirmPassword } = formFields;
     if (password !== confirmPassword || !email || !displayName) {
-      setSignUpError({ code: "Horseshit", message: "fill it out right" });
+      setSignUpError({
+        code: "That's horseshit.",
+        message: "Fill it out right.",
+      });
       return;
     }
     try {
@@ -43,21 +46,18 @@ const SignUpForm = () => {
         email,
         password
       );
-      console.log(user);
       await createUserDocFromAuth(user, { displayName });
       resetFormFields();
       setSignUpError(null);
     } catch (error) {
-      console.error(error);
       setSignUpError(error);
     }
   };
 
   const SignUpError = () => {
     return signUpError ? (
-      <div>
-        Error {signUpError.code}, {signUpError.message}
-        <br />
+      <div className="form-error">
+        {signUpError.message.split("Firebase: ")[1]}
       </div>
     ) : (
       ""
@@ -67,7 +67,7 @@ const SignUpForm = () => {
   return (
     <div className="sign-up-container">
       <h2>Don't have an account?</h2>
-      <span>Sign Up with Email/Password</span>
+      <span>Sign up with your email and password</span>
       <SignUpError />
       <form onSubmit={handleSubmit}>
         <TextField
@@ -102,7 +102,7 @@ const SignUpForm = () => {
           value={confirmPassword}
           onChange={handleChange}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Sign Up</Button>
       </form>
     </div>
   );
