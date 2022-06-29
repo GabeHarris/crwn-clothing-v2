@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import { useState, Fragment } from "react";
+import { useState } from "react";
 
-import Home from "./routes/home/Home";
-import NavigationBar from "./routes/navigation-bar/NavigationBar";
-import Authentication from "./routes/authentication/Authentication";
-import Button from "./components/button/Button";
+import Home from "./routes/home/Home.route";
+import NavigationBar from "./routes/navigation-bar/NavigationBar.route";
+import Authentication from "./routes/authentication/Authentication.route";
+import Button from "./components/button/Button.component";
 
 const Shop = () => {
   const [word, setWord] = useState("Donkey");
