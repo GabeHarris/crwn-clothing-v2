@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -20,6 +21,7 @@ const firebaseConfig = {
   appId: "1:279296541273:web:a582484ba2bad1142ca748",
 };
 
+// eslint-disable-next-line
 const firebaseApp = initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
@@ -38,10 +40,7 @@ export const signInWithGoogleRedirect = () =>
 
 export const db = getFirestore();
 
-export const createUserDocFromAuth = async (
-  userAuth,
-  additionalInfo = { displayName: "" }
-) => {
+export const createUserDocFromAuth = async (userAuth, additionalInfo = {}) => {
   if (!userAuth) return;
   const userDocRef = doc(db, "users", userAuth.uid);
 
@@ -87,4 +86,5 @@ export const authWithEmailAndPassword = async (email, password) => {
 
 export const signOutUser = () => signOut(auth);
 
-export const onAuthStateChangedListener = () => {};
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);
