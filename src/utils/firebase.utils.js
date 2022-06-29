@@ -64,6 +64,23 @@ export const createUserDocFromAuth = async (userAuth, additionalInfo = {}) => {
   return userDocRef;
 };
 
+export const createProductsDocFromAuth = async (productAuth) => {
+  if (!productAuth) return;
+  const productsDocRef = doc(db, "products", productAuth.uid);
+
+  const productsSnapshot = await getDoc(productsDocRef);
+
+  if (!productsSnapshot.exists()) {
+    try {
+      await setDoc(productsDocRef, {});
+    } catch (err) {
+      console.error("error creating products: ", err);
+    }
+  }
+
+  return productsDocRef;
+};
+
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   const userCredential = await createUserWithEmailAndPassword(

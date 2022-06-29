@@ -40,7 +40,7 @@ const SignInForm = () => {
       return;
     }
     try {
-      const { user } = await authWithEmailAndPassword(email, password);
+      await authWithEmailAndPassword(email, password);
       resetFormFields();
       setSignInError(null);
     } catch (error) {
