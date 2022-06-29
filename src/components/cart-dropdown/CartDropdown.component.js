@@ -1,13 +1,23 @@
+import { Fragment } from "react";
 import CartItem from "../cart-item/CartItem.component";
 import Button from "../button/Button.component";
 import "./cart-dropdown.scss";
 
-const CartDropdown = () => {
+const CartDropdown = ({ cartItems }) => {
   return (
     <div className="cart-dropdown-container">
-      <div className="empty-message"></div>
-      <div className="cart-items"></div>
-      <Button>Go To Checkout</Button>
+      {cartItems && cartItems.length > 0 ? (
+        <Fragment>
+          <div className="cart-items">
+            {cartItems.map((item) => (
+              <CartItem key={item.id} cartItem={item} />
+            ))}
+          </div>
+          <Button>Go To Checkout</Button>
+        </Fragment>
+      ) : (
+        <div className="empty-message">Your cart is empty</div>
+      )}
     </div>
   );
 };
