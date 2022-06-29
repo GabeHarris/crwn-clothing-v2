@@ -8,7 +8,6 @@ const addCartItem = (cartItems, newItem) => {
   } else {
     newItemsArray.push(newItem);
   }
-  console.log(newItemsArray);
   return newItemsArray;
 };
 
