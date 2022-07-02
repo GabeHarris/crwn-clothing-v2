@@ -5,46 +5,47 @@ import "./checkout-item.scss";
 const CheckoutItem = ({ checkoutItem }) => {
   const { imageUrl, name, quantity, price } = checkoutItem;
 
-  const { editCheckoutItem } = useContext(CartContext);
+  const { editCartItems } = useContext(CartContext);
 
-  const handleChangeQuantity = (newQuantity) => {
-    const updatedItem = { ...checkoutItem, quantity: newQuantity };
-    editCheckoutItem(updatedItem);
+  const handleChangeQuantity = (delta) => {
+    console.log("change it this much: ", delta);
+    const updatedItem = { ...checkoutItem, quantity: delta };
+    editCartItems(updatedItem);
   };
 
   return (
     <div className="checkout-item-container">
       <div className="image-container">
-        <img src={imageUrl} alt={name} />
+        <img src={imageUrl} alt={`${name}`} />
       </div>
       <div className="name">{name}</div>
       <div className="quantity">
         <span
           className="arrow"
           onClick={() => {
-            handleChangeQuantity(quantity - 1);
+            handleChangeQuantity(-1);
           }}
         >
-          &#94;
+          &#10094;
         </span>
         <span className="value">{quantity}</span>
         <span
           className="arrow"
           onClick={() => {
-            handleChangeQuantity(quantity + 1);
+            handleChangeQuantity(1);
           }}
         >
-          &#94;
+          &#10095;
         </span>
       </div>
       <div className="price">${price}</div>
       <div
         className="remove-button"
         onClick={() => {
-          handleChangeQuantity(0);
+          handleChangeQuantity(quantity * -1);
         }}
       >
-        &times;
+        &#10006;
       </div>
     </div>
   );

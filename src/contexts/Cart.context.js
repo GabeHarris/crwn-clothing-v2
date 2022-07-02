@@ -1,55 +1,66 @@
 import { createContext, useState, useEffect } from "react";
 
-const addRemoveCartItem = (cartItems, item, add) => {
+/*
+This motherfucker takes the existing items and a new one.
+The quantity on the new one is a delta, so it can be negative.
+If we have the item passed in, we manipulate the quantity
+with the delta. If the new quantity is 0, we return the 
+original array without that item. If we do not have the 
+item passed in, we add it to our array.
+*/
+const modifyCartItems = (cartItems, item) => {
   const newItemsArray = [...cartItems];
-  const foundItem = newItemsArray.find((i) => i.id === item.id);
+  const foundItem = cartItems.find((i) => i.id === item.id);
   if (foundItem) {
-    if (add) {
-      foundItem.quantity++;
+    const newQty = (foundItem.quantity += item.quantity);
+    if (newQty === 0) {
+      return cartItems.filter((i) => i.id !== item.id);
     } else {
-      const index = newItemsArray.map((i) => i.id).indexOf(item.id);
-      newItemsArray.splice(index, 1);
+      foundItem.quantity = newQty;
     }
   } else {
-    if (add) {
-      newItemsArray.push(item);
-    }
+    newItemsArray.push(item);
   }
+  console.log("modifyCartItems newItemsArray: ", newItemsArray);
   return newItemsArray;
 };
 
-const modifyCheckoutItem = (cartItems, item) => {
-  const newItemsArray = [...cartItems];
-  const newItem = cartItems.find((i) => i.id === item.id);
-  newItem.quantity = item.quantity;
-  if (newItem.quantity < 1) {
-    const index = newItemsArray.map((i) => i.id).indexOf(item.id);
-    newItemsArray.splice(index, 1);
-  }
-  return newItemsArray;
-};
-
-// as the actual value you want to access
+/* Homeboy said "as the actual value you want to access"
+But I have no idea what the fuck that means or what these do.
+I make sure to keep these updated with the properties
+in the value = {} below that is a prop for CartContext.Provider.
+I have no idea why because when I didn't keep this updated 
+everything still fucking worked?
+*/
 export const CartContext = createContext({
   isCartOpen: false,
   toggleCartOpen: () => {},
   cartItems: [],
-  setCartItems: () => {},
   setCartCount: () => {},
   setCartTotalPrice: () => {},
-  addItemToCart: () => {},
-  removeItemFromCart: () => {},
-  editCheckoutItem: () => {},
+  editCartItems: () => {},
   cartCount: 0,
   cartTotalPrice: 0,
 });
 
+/*
+This thing basically sort of works like a regular functional 
+component with the state and effect and all that.
+You take it and wrap it around whatever part of the app will
+need access to this data/state - often in the main index.js file
+*/
 export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
   const [cartTotalPrice, setCartTotalPrice] = useState(0);
 
+  /*
+  useEffect has to return a function, the function that makes the 
+  changes to data/state. The array parameter is a list of things
+  that when they change they trigger the function returned inside.
+  So an empty array means only run that function one time
+  */
   useEffect(() => {
     const newCartTotals = { count: 0, price: 0 };
     cartItems.forEach(({ quantity, price }) => {
@@ -60,33 +71,23 @@ export const CartProvider = ({ children }) => {
     setCartTotalPrice(newCartTotals.price);
   }, [cartItems]);
 
-  const addItemToCart = (itemToAdd) => {
-    const newItemsArray = addRemoveCartItem(cartItems, itemToAdd, true);
-    setCartItems(newItemsArray);
+  // This function handles all adding and removing of items to the cart
+  const editCartItems = (itemToEdit) => {
+    setCartItems(modifyCartItems(cartItems, itemToEdit));
   };
 
-  const removeItemFromCart = (itemToRemove) => {
-    const newItemsArray = addRemoveCartItem(cartItems, itemToRemove, false);
-    setCartItems(newItemsArray);
-  };
-
-  const editCheckoutItem = (itemToEdit) => {
-    const newItemsArray = modifyCheckoutItem(cartItems, itemToEdit);
-    setCartItems(newItemsArray);
-  };
-
+  // hide or show the cartdropdown
   const toggleIsCartOpen = () => {
     setIsCartOpen(!isCartOpen);
   };
 
+  // This is where you pass through everything that needs
+  // to be exposed to any child components inside the Provider
   const value = {
     isCartOpen,
     toggleIsCartOpen,
     cartItems,
-    setCartItems,
-    addItemToCart,
-    removeItemFromCart,
-    editCheckoutItem,
+    editCartItems,
     cartCount,
     cartTotalPrice,
   };

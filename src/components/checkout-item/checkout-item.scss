@@ -30,12 +30,6 @@
 
     .arrow {
       cursor: pointer;
-      font-weight: bold;
-      transform: rotate(-90deg) scaleX(160%);
-
-      &:last-of-type {
-        transform: rotate(90deg) scaleX(160%);
-      }
     }
 
     .value {
