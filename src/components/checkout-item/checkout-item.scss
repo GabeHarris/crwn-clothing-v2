@@ -1,0 +1,50 @@
+.checkout-item-container {
+  width: 100%;
+  display: flex;
+  min-height: 100px;
+  border-bottom: 1px solid darkgrey;
+  padding: 15px 0;
+  font-size: 20px;
+  align-items: center;
+
+  .image-container {
+    width: 23%;
+    padding-right: 15px;
+
+    img {
+      max-width: 100%;
+      width: auto;
+      height: auto;
+    }
+  }
+
+  .name,
+  .quantity,
+  .price {
+    width: 23%;
+  }
+
+  .quantity {
+    align-items: center;
+    display: flex;
+
+    .arrow {
+      cursor: pointer;
+      font-weight: bold;
+      transform: rotate(-90deg) scaleX(160%);
+
+      &:last-of-type {
+        transform: rotate(90deg) scaleX(160%);
+      }
+    }
+
+    .value {
+      margin: 0 10px;
+    }
+  }
+
+  .remove-button {
+    padding-left: 12px;
+    cursor: pointer;
+  }
+}

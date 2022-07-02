@@ -10,7 +10,7 @@ import "./navigation.scss";
 
 const NavigationBar = () => {
   const { currentUser } = useContext(UserContext);
-  const { isCartOpen, cartItems } = useContext(CartContext);
+  const { isCartOpen } = useContext(CartContext);
 
   return (
     <Fragment>
@@ -39,7 +39,7 @@ const NavigationBar = () => {
               <CartIcon />
             </span>
           </div>
-          {isCartOpen && <CartDropdown cartItems={cartItems} />}
+          {isCartOpen && <CartDropdown />}
         </div>
       </header>
       <main>

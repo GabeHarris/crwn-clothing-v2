@@ -1,9 +1,11 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
+import { Link } from "react-router-dom";
+import { CartContext } from "../../contexts/Cart.context";
 import CartItem from "../cart-item/CartItem.component";
-import Button from "../button/Button.component";
 import "./cart-dropdown.scss";
 
-const CartDropdown = ({ cartItems }) => {
+const CartDropdown = () => {
+  const { cartItems, toggleIsCartOpen } = useContext(CartContext);
   return (
     <div className="cart-dropdown-container">
       {cartItems && cartItems.length > 0 ? (
@@ -13,7 +15,13 @@ const CartDropdown = ({ cartItems }) => {
               <CartItem key={item.id} cartItem={item} />
             ))}
           </div>
-          <Button>Go To Checkout</Button>
+          <Link
+            to="/checkout"
+            className="button-container"
+            onClick={toggleIsCartOpen}
+          >
+            Go To Checkout
+          </Link>
         </Fragment>
       ) : (
         <div className="empty-message">Your cart is empty</div>
