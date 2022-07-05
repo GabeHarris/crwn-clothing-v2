@@ -1,5 +1,5 @@
-import { createContext, useState } from "react";
-import PRODUCTS from "../shop-data.json";
+import { createContext, useState, useEffect } from "react";
+import { getCategoriesAndDocuments } from "../utils/firebase.utils";
 
 /* Homeboy said "as the actual value you want to access"
 But I have no idea what the fuck that means or what these do.
@@ -19,7 +19,22 @@ You take it and wrap it around whatever part of the app will
 need access to this data/state - often in the main index.js file
 */
 export const ProductsProvider = ({ children }) => {
-  const [products] = useState(PRODUCTS);
+  const [products, setProducts] = useState([]);
+
+  // this was just to load the shop data one time
+  // useEffect(() => {
+  //   addCollectionAndDocuments("categories", SHOP_DATA);
+  // }, []);
+
+  useEffect(() => {
+    // cannot use an async function as the anonymous function in useEffect,
+    // you have to create another function to wrap the async call
+    const getCategoriesMap = async () => {
+      const categoryMap = await getCategoriesAndDocuments();
+      console.log(categoryMap);
+    };
+    getCategoriesMap();
+  }, []);
 
   const value = { products };
 
